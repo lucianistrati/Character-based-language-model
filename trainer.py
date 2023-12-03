@@ -10,6 +10,26 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 
 
+class EarlyStopper:
+    def __init__(self, patience=5, delta=0.1):
+        self.patience = patience
+        self.delta = delta
+        self.counter = 0
+        self.best_metric = float('inf')
+        self.early_stop = False
+        self.batches_count = 0
+
+    def step(self, metric):
+        if metric < self.best_metric - self.delta:
+            self.best_metric = metric
+            self.counter = 0
+        else:
+            self.counter += 1
+
+    def should_stop(self):
+        return self.counter >= self.patience
+
+
 class Trainer:
     def __init__(self, config, model, train_dataset):
         self.config = config
@@ -17,6 +37,7 @@ class Trainer:
         self.optimizer = None
         self.train_dataset = train_dataset
         self.callbacks = defaultdict(list)
+        self.num_datapoints = len(train_dataset)
 
         # determine the device we'll train on
         if config.device == 'auto':
@@ -46,6 +67,10 @@ class Trainer:
 
         # setup the optimizer
         self.optimizer = model.configure_optimizers(config)
+        self.lr_scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer,
+                                                step_size=200,
+                                                       gamma=0.5)
+        self.early_stopper = EarlyStopper(patience=5, delta=0.1)
 
         # setup the dataloader
         train_loader = DataLoader(
@@ -80,6 +105,7 @@ class Trainer:
             self.loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), config.grad_norm_clip)
             self.optimizer.step()
+            self.early_stopper.batches_count += 1
 
             self.trigger_callbacks('on_batch_end')
             self.iter_num += 1
@@ -90,3 +116,8 @@ class Trainer:
             # termination conditions
             if config.max_iters is not None and self.iter_num >= config.max_iters:
                 break
+
+            if self.early_stopper.batches_count > len(self.train_dataset) / 32:
+                self.early_stopper.step(self.loss)
+                if self.early_stopper.should_stop():
+                    break
