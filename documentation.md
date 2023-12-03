@@ -4,7 +4,7 @@
 ## Word embeddings trade-off
 
 One problem that might come with using word embeddings instead of character 
-embeddings is that with word embeddings you might encounter out of vocabulary tokens elements quite often, another issue with word embeddings is word ambiguity as the same word could mean different things and we might use the same representation if we use static word embeddings instead of in context word embeddings.
+embeddings is that with word embeddings you might encounter out of vocabulary tokens elements quite often, another issue with word embeddings is word ambiguity as the same word could mean different things and we might use the same representation if we use static word embeddings instead of in context word embeddings. However advantages could be for sure capturing better semantic representations than character representations which are much more limited and less sensitive to nuances, also by using context embeddings instead of static embeddings of word we avoid the problem of polysemy for the same vectorization, another advantage is that word embeddings are dense concise representations which are much costlier but also of better quality than one hot encoded like word representations how n-grams or bag of words are.
 
 ## Better metric
 
