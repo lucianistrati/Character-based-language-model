@@ -4,7 +4,7 @@
 ## Word embeddings trade-off
 
 One problem that might come with using word embeddings instead of character 
-embeddings is that ...
+embeddings is that with word embeddings you might encounter out of vocabulary tokens elements quite often, another issue with word embeddings is word ambiguity as the same word could mean different things and we might use the same representation if we use static word embeddings instead of in context word embeddings.
 
 ## Better metric
 
