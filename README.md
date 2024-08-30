@@ -128,5 +128,3 @@ display the best results for the task.
 Codebase adapted from minGPT: https://github.com/karpathy/minGPT/
 
 
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
-
