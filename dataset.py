@@ -1,8 +1,3 @@
-"""
-Creates a character-level language-modelling dataset from a stream of text.
-You shouldn't need to make any changes to this file.
-"""
-
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import DataLoader
