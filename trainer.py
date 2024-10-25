@@ -1,8 +1,3 @@
-"""
-Simple training loop; Boilerplate that could apply to any arbitrary neural network.
-You shouldn't need to make any changes to this file.
-"""
-
 import time
 from collections import defaultdict
 
